@@ -29,16 +29,20 @@ if(isset($_POST['btn-entrar'])):
             $senha = md5($senha);
             $sql = "SELECT * FROM usuario WHERE senha = '$senha' AND login = '$login' ";
             $resultado = mysqli_query($connect, $sql);
+            //cria uma sessão para logado e de id.
                 if(mysqli_num_rows($resultado) == 1):
                     $dados = mysqli_fetch_array($resultado);
-                    $_SESSON['logado'] = true;
-                    $_SESSON['id_usuario'] = $dados['id'];
+                    $_SESSION['logado'] = true;
+                    $_SESSION['id_usuario'] = $dados['id'];
                     header('Location: home.php');
+                    mysqli_close($connect);
                 else:
                     $erros[] = "<li> Usuário e senha não conferem </li>";
+                    mysqli_close($connect);
                 endif;
         else:
             $erros[] = "<li> usuário inexistente </li>";
+            mysqli_close($connect);
         endif;
     endif;
 endif;
